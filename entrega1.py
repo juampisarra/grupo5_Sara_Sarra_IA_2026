@@ -1,16 +1,38 @@
-"""Entrega 1: planificador del rover Ares-1.
+from simpleai.search import SearchProblem
 
-La busqueda debe ejecutarse solo al llamar a ``planear_rover``.
-"""
 
+
+class RoverProblem(SearchProblem):
+
+    def is_goal(self, state):
+        return not state[3] and not state[4]
+
+    def cost(self, state, action, state2):
+        pass
+
+    def result(self, state, action):
+        pass
+
+    def actions(self, state):
+        pass
+
+    def heuristic(self, state):
+        pass
 
 def planear_rover(
     rover_inicio,
     bateria_inicial,
     zonas_sombra,
-    muestras_igneas,
+    tuple()muestras_igneas,
     muestras_sedimentarias,
 ):
-    """Devuelve la lista de acciones para recolectar y depositar todas las muestras."""
+#    """Devuelve la lista de acciones para recolectar y depositar todas las muestras."""
     raise NotImplementedError("Pendiente implementar el planificador con SimpleAI.")
+
+
+
+
+
+
+
 
