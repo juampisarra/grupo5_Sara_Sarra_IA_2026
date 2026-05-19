@@ -1,4 +1,11 @@
 # Conclusiones entrega 1
 
-Pendiente completar luego de comparar la implementacion propia con `entrega1_por_ia.py`.
+Al comparar nuestra solución con la generada por Codex, se nota que ambas parten de la misma idea general
+En nuestro caso fuimos armando la solución de forma más paso a paso, tratando de que cada acción se entienda clara y respetando las restricciones principales del problema. La solución de Codex está más ordenada desde el comienzo, usando constantes, funciones auxiliares y una estructura más prolija
+Una diferencia importante está en cómo se manejan las acciones y el espacio de búsqueda. Nuestra solución genera las acciones de una forma mas simple. La solución de Codex agrega cosas nuevas , como limitar la zona del mapa para que la búsqueda no se vaya lejos, normalizar las muestras y usar estructuras como frozenset para las zonas de sombra. Creemos nosotros que esas cosas hacen la diferencia
 
+En la solución de Codex se cuidó más que el estado sea inmutable, usando tuplas y estructuras que no se modifican directamente. Esto hace que SimpleAI pueda reconocer estados repetidos cuando usa graph_search=True, haciendo que no tenga que recorrer la misma situación. En nuestra solución también usamos tuplas para las muestras y la carga, aunque de una forma más simple y menos complicada ya que no sabia de la existencia de poder usar una especie de "diccionario de estados"
+
+También cambia bastante la heurística. Nuestra heurística es más simple ya que estima un mínimo considerando la recolección, el depositar y una distancia básica hacia alguna muestra pendiente. La de Codex es más elaborada, porque además calcula una estimación del movimiento necesario para conectar las muestras y también considera cambios mínimos de taladro. Por lo que entendimos es una forma que guia mas a A* , pero no la entendimos mucho
+
+En resultados , nuestra solución logró resolver los casos principales, pero necesitó ajustes durante las pruebas, sobre todo por temas como permitir coordenadas negativas, manejar bien la recarga y no generar recorridos más largos de lo necesario. La solución de Codex fue más eficiente y tuvo mejor performance en general, especialmente en escenarios más grandes o con muchas sombras.

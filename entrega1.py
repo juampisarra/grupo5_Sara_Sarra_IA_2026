@@ -44,7 +44,7 @@ class RoverProblem(SearchProblem):
             nueva_fila = fila + df
             nueva_col = columna + dc
 
-            if nueva_fila >= 0 and nueva_col >= 0 and bateria - 1 > 0:
+            if bateria - 1 > 0:
                 acciones.append(("moverse", (nueva_fila, nueva_col)))
 
         # sobremarcha
@@ -63,7 +63,7 @@ class RoverProblem(SearchProblem):
             nueva_fila = fila + df
             nueva_col = columna + dc
 
-            if nueva_fila >= 0 and nueva_col >= 0 and bateria - 4 > 0:
+            if bateria - 4 > 0:
                 acciones.append(("sobremarcha", (nueva_fila, nueva_col)))
 
         # ahora hago equipar los 2 taladros por separado
@@ -101,7 +101,8 @@ class RoverProblem(SearchProblem):
         # ahora la parte de recargar
         # no tiene q estar en zona sombra y que no tenga bat max
         if posicion not in self.zonas_sombra and bateria < 20:
-            acciones.append(("recargar", None))
+            if bateria <= 4 or len(self.zonas_sombra) > 0:
+                acciones.append(("recargar", None))
 
         return acciones
         pass
@@ -185,13 +186,24 @@ class RoverProblem(SearchProblem):
 
         posicion, bateria, taladro, ingneas, sedimentarias, carga = state
 
-        pendientes = len(ingneas) + len(sedimentarias)
-        costo_recolectar_faltante = pendientes * 2
+        muestras_total = ingneas + sedimentarias
 
-        costo_depositar = len(carga)
+        recolectar_y_depositar = len(muestras_total) * 3
 
-        return costo_recolectar_faltante + costo_depositar
-        pass
+        costo_dep = len(carga)
+
+        if muestras_total:
+            fila, col = posicion
+
+            distancia_minima = min(
+                abs(fila - mfila) + abs(col - mcol) for mfila, mcol in muestras_total
+            )
+
+            costo_moverse_minimo = (distancia_minima + 1) // 2
+        else:
+            costo_moverse_minimo = 0
+
+        return costo_moverse_minimo + recolectar_y_depositar + costo_dep
 
 
 def planear_rover(
