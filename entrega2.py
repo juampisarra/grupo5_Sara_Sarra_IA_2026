@@ -4,21 +4,20 @@ import itertools
 # generators=1
 #labs= 2
 #etc
-def createVariable(habs, generators, labs, deposits, airlocks, craters):
+def createVariable(habs, generators, labs, deposits, airlocks):
     variables = [] 
 
     for i in habs: #i=2
-        variables.append("habs{i}")
+        variables.append(f"habs{i}")
     for i in generators: #i=1
-        variables.append("generators{i}")
+        variables.append(f"gen{i}")
     for i in labs: #labs = 2
-        variables.append("labs{i}")
+        variables.append(f"labs{i}")
     for i in deposits:
-        variables.append("deposits{i}")
+        variables.append(f"dep{i}")
     for i in airlocks:
-        variables.append("airlocks{i}")
-    for i in craters:
-        variables.append("craters{i}")
+        variables.append(f"air{i}")
+ 
 
     return variables
 
@@ -44,10 +43,10 @@ def dominios (variables, camp_size, crateres):
             
             celda = fila,columna
 
-            if (celda) not in crateres:
+            if (celda) not in crateres_set:
                 celdasLibres.append(celda)
             
-            dominios = {}
+            dominios = []
 
     for var in variables:
 
@@ -56,7 +55,8 @@ def dominios (variables, camp_size, crateres):
                 celda for celda in celdasLibres
             if celda_en_borde(celda, camp_size)
             ]
-        elif var.startwith("hab"):
+
+        elif var.startswith("hab"):
             dominios[var] = [
                 celda for celda in celdasLibres
                 if not celda_en_borde(celda, camp_size)
@@ -65,4 +65,14 @@ def dominios (variables, camp_size, crateres):
              dominios[var] = celdasLibres
     return dominios  
 
-            
+def no_superpone(variables, valores):
+    return valores[0] != valores [1]
+
+def restrcciones(variables):
+    constraints = []
+
+    for var1, var2 in itertools.combinations(variables, 2):
+        constraints.append(((var1,var2), no_superpone))
+
+    return constraints
+
