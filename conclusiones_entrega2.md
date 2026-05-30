@@ -1,0 +1,15 @@
+# Conclusiones entrega 2
+
+Al comparar nuestra solucion con la generada por Codex, se nota que las dos resuelven el problema usando la misma idea principal: modelar la construccion del campamento como un CSP, donde cada modulo es una variable, cada variable tiene un dominio de celdas posibles y las restricciones controlan que la ubicacion final sea valida.
+
+En nuestra solucion fuimos armando el problema de forma mas paso a paso. Primero creamos las variables, despues los dominios y luego agregamos las restricciones una por una. Esto hizo que el codigo sea mas facil de entender mientras lo ibamos construyendo, porque cada funcion representa una parte concreta del enunciado, como ver si una celda esta en el borde, si dos celdas son adyacentes o si un habitacional tiene una celda libre al lado.
+
+La solucion de Codex esta mas compacta y organizada desde el comienzo. Usa nombres internos mas uniformes, como hab_0, gen_0 y lab_0, y separa la logica en funciones auxiliares privadas. Tambien usa una funcion para obtener el tipo de modulo a partir del nombre de la variable, lo que evita repetir tantos startswith en varias partes del codigo. En nuestra solucion usamos prefijos como habs, labs, gen, dep y air, y despues los convertimos al formato pedido al devolver el resultado.
+
+Una diferencia importante esta en como se construyen las restricciones. En nuestra solucion se ve mas explicitamente el recorrido con itertools.combinations, agregando la restriccion de no superposicion y despues las restricciones especiales entre generadores, habitacionales, laboratorios y depositos. En la solucion de Codex se agrupan mejor los tipos de variables y se arma la lista de restricciones de una forma mas general, usando funciones como kind, build_domains y build_constraints.
+
+Tambien cambia la forma de pensar algunas restricciones. Por ejemplo, la restriccion de que cada laboratorio tenga al menos un deposito adyacente no se puede resolver solamente comparando pares, porque no se pide que este al lado de todos los depositos, sino de alguno. En ambas soluciones esto se termina resolviendo con una restriccion que mira el laboratorio junto con todos los depositos. Algo parecido pasa con los habitacionales y la celda libre de evacuacion, ya que esa restriccion necesita saber que celdas estan ocupadas, cuales son crateres y cuales son vecinas.
+
+En cuanto a claridad, nuestra solucion muestra mejor el proceso de aprendizaje, porque las funciones fueron apareciendo a medida que entendiamos cada restriccion. La de Codex queda mas prolija y mas consistente, pero tambien puede ser menos directa al principio porque usa mas funciones auxiliares y nombres mas abstractos.
+
+En resultados, ambas soluciones pueden resolver los casos del enunciado, pero la version de Codex esta escrita de una forma mas ordenada y menos repetitiva. Nuestra solucion cumple con la idea del problema y nos ayudo a entender mejor como se representa un CSP en SimpleAI, especialmente la diferencia entre restricciones binarias simples y restricciones que necesitan mirar varias variables al mismo tiempo.

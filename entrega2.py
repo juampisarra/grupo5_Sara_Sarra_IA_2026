@@ -158,3 +158,38 @@ def hab_tiene_celdas_libre(camp_size, crateres):
         return False
     
     return restriccion
+
+
+def build_camp(camp_size, habs, generators, labs, deposits, airlocks, craters):
+    variables = createVariable(habs, generators, labs, deposits, airlocks)
+    domains= dominios(variables, camp_size, craters)
+    constraints = restrcciones(variables, camp_size, craters)
+
+    problema = CspProblem(variables, domains, constraints)
+    solucion = backtrack(problema)
+
+    if solucion is None:
+        return None
+    
+    resultado = []
+
+    #Solucion devuelve pares, es decir
+    #"habs0", (2,1)
+    for var, celda in solucion.items():
+        fila, columna = celda
+
+
+        if var.startswith("hab"):
+            tipo = "hab"
+        elif var.startswith("gen"):
+            tipo = "gen"
+        elif var.startswith("lab"):
+            tipo = "lab"
+        elif var.startswith("dep"):
+            tipo = "dep"
+        elif var.startswith("air"):
+            tipo = "air"
+
+        resultado.append((tipo, fila, columna))
+
+    return resultado
